@@ -17,8 +17,8 @@
                     </a>
                 {% else %}
                     <a class="nav-link" href="{{request.resource_path(resource)}}">
-                        <span class="pyragit-resource-type">{{'d' if resource.pygit2_tree_entry.type == 'tree' else 'f'}}</span>
-                        {{resource.__name__}}{{'/' if resource.pygit2_tree_entry.type == 'tree'}}
+                        <span class="pyragit-resource-type">{{'d' if resource.type == 'tree' else 'f'}}</span>
+                        {{resource.__name__}}{{'/' if resource.type == 'tree'}}
                     </a>
                 {% endif %}
             </li>
@@ -34,6 +34,10 @@
         <link rel="shortcut icon" href="{{request.static_url('pyragit:static/pyramid-16x16.png')}}">
     -->
 
+    {% if context.type == 'blob' %}
+        <base href="{{ request.resource_url(context.__parent__) }}">    
+    {% endif }
+    
     <title>dw:~/{% for name in request.traversed %}{{ name if loop.last else name[0]+'/'}}{% endfor %}</title>
 
     <!-- Bootstrap core CSS -->

@@ -25,6 +25,14 @@ class BaseResource:
             self._pygit2_object = self.request.repository[oid]
         return self._pygit2_object
 
+    @property
+    def type(self):
+        ''' returns the type of the resource, either 'tree' or 'blob' '''
+        if self.pygit2_tree_entry is None:
+            # Root has no tree entry, but is a Folder
+            return 'tree'
+        return self.pygit2_tree_entry.type
+
 
 class Folder(BaseResource):
     ''' Resource representing a git tree (like a folder in a file system) '''
