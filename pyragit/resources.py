@@ -42,7 +42,7 @@ class BaseResource:
         from https://stackoverflow.com/questions/13293052/pygit2-blob-history
         '''
         if self._last_commit:
-            reutrn self._last_co
+            return self._last_commit
             
         # loops through all the commits
         last_oid = None
