@@ -1,0 +1,33 @@
+{% extends "layout.jinja2" %}
+
+{% block text %}
+    {% if context.index %}
+        <h1> Put Markdown Here </h1>
+    {% else %}
+        <h1> Crivens ! </h1>
+        <p>
+            If a markdown document is added at this path:
+        </p>
+        <p class="text-info">
+            ~/{{ request.traversed|join('/') }}/index{{ request.markdown_extension }}
+        </p>
+        <p>
+            it's content would be displayed here…
+        </p>
+    {% endif %}
+{% endblock text %}
+
+{% block explore %}
+    <ul class="nav flex-column">
+        {% if context != request.root %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{request.resource_path(context.__parent__)}}">d ..</a>
+            </li>
+        {% endif %}
+        {% for resource in context %}
+            <li class="nav-item">
+                <a class="nav-link {{'active' if resource.__name__ == context.__name__}}" href="{{request.resource_path(resource)}}">{{'d' if resource.pygit2_tree_entry.type == 'tree' else 'f'}} {{resource.__name__}}{{'/' if resource.pygit2_tree_entry.type}}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock explore %}
