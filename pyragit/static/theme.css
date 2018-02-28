@@ -3,8 +3,12 @@ body {
     font-size: 90%; 
     }
 
+code {
+    color: #dc3545; 
+    }
+
 .breadcrumb-item a {
-    color: #6c757d;
+    color: #212529;
  }
 
 .pyragit-explore a.nav-link { 
