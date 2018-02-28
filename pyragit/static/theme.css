@@ -19,6 +19,10 @@ code {
 .pyragit-explore a.nav-link:hover { 
     text-decoration:underline; 
     }
+    
+.pyragit-meta {
+    font-size:75%;
+    }
 
 blockquote {
     border-left: .5rem solid #e9ecef ;
