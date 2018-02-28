@@ -3,6 +3,7 @@
 
 import pygit2
 
+from datetime import datetime
 from pathlib import Path
 from pyramid.exceptions import ConfigurationError
 
@@ -16,6 +17,7 @@ class BaseResource:
         self.pygit2_tree_entry = tree_entry
         self.request = request
         self._pygit2_object = None
+        self._last_commit = None
     
     @property
     def pygit2_object(self):
@@ -33,18 +35,17 @@ class BaseResource:
             return 'tree'
         return self.pygit2_tree_entry.type
     
+    @property
     def last_commit(self):
         ''' get the last commit of the resource 
         
         from https://stackoverflow.com/questions/13293052/pygit2-blob-history
         '''
-        if self.__name__ is None:
-            # last commit of Root is easily acessible
-            return self.commit
+        if self._last_commit:
+            reutrn self._last_co
             
         # loops through all the commits
         last_oid = None
-        last_commit = None
         repo = self.request.repository
         for commit in repo.walk(repo.head.target, pygit2.GIT_SORT_TIME):
 
@@ -55,14 +56,22 @@ class BaseResource:
                 oid = self.pygit2_tree_entry.oid
                 has_changed = (oid != last_oid and last_oid)
                 if has_changed:
-                    return last_commit                
+                    return self._last_commit                
                 last_oid = oid
             else:
                 last_oid = None
 
-            last_commit = commit
+            self._last_commit = commit
             
-        return last_commit
+        return self._last_commit
+
+    @propery
+    def author(self):
+        return self.last_commit.author.name
+    
+    @property
+    def date(self):
+        return datetime.fromtimestamp(float(self.last_commit.author.time)
 
 
 class Folder(BaseResource):
@@ -133,8 +142,8 @@ class Root(Folder):
     def __init__(self, request):
         super().__init__(None, None, None, request)        
         head = request.repository.head
-        self.commit = head.peel()
-        self._pygit2_object = self.commit.tree
+        self._last_commit = head.peel()
+        self._pygit2_object = self._last_commit.tree
 
 
 class File(BaseResource):

@@ -30,6 +30,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="{{ context.author }}">
+    <meta name="date" content="{{ context.date.strftime('%Y-%m-%d') }}">
     <!--
         <link rel="shortcut icon" href="{{request.static_url('pyragit:static/pyramid-16x16.png')}}">
     -->
@@ -76,6 +78,9 @@
                 {% block text %}
                     <p>Text Column</p>
                 {% endblock text %}
+                <hr>
+                {{ context.author }} - {{ context.date.strftime('%Y-%m-%d') }}
+
             </div>
             <div class="col-lg mt-2 pyragit-explore">
                 {% block explore %}
