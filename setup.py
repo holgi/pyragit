@@ -9,6 +9,8 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 requires = [
+    'mistune',
+    'mistune-contrib',
     'plaster_pastedeploy',
     'pygit2',
     'pyramid',

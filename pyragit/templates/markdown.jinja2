@@ -1,0 +1,9 @@
+{% extends "layout.jinja2" %}
+
+{% block text %}
+    {{ request.render_markdown(context.text)|safe }}
+{% endblock text %}
+
+{% block explore %}
+    {{ folder_list(context.__parent__) }}
+{% endblock explore %}

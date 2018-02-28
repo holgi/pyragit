@@ -48,10 +48,10 @@ class Folder(BaseResource):
         for entry in trees:
             yield Folder(entry.name, self, entry, self.request)
         md_ext = self.request.markdown_extension
-        blobs = (e for e in ordered if e.type=='blobs')
+        blobs = (e for e in ordered if e.type=='blob')
         texts = (e for e in blobs if e.name.endswith(md_ext))
         for entry in texts:
-            name = key[:-len(md_ext)]
+            name = entry.name[:-len(md_ext)]
             yield Markdown(name, self, entry, self.request)                
     
     @property

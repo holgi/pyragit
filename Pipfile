@@ -8,7 +8,7 @@ name = "pypi"
 [packages]
 
 pyramid = "*"
-"e1839a8" = {path = ".", extras = ["testing"], editable = true}
+"e1839a8" = {path = ".", editable = true}
 
 
 [dev-packages]
