@@ -3,7 +3,7 @@ import mistune
 from mistune_contrib import highlight
 
 
-class HighlightRenderer(highlight.HighlightMixin, mistune.Renderer):
+class HighlightRenderer(mistune.Renderer, highlight.HighlightMixin):
     pass
 
 
