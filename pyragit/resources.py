@@ -46,7 +46,7 @@ class BaseResource:
         last_oid = None
         last_commit = None
         repo = self.request.repository
-        for commit in repo.walk(self.commit.oid, pygit2.GIT_SORT_TIME):
+        for commit in repo.walk(repo.head.target, pygit2.GIT_SORT_TIME):
 
             # checks if the file exists
             if self.pygit2_tree_entry.name in commit.tree:
