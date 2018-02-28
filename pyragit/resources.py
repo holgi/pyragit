@@ -65,7 +65,7 @@ class BaseResource:
             
         return self._last_commit
 
-    @propery
+    @property
     def author(self):
         return self.last_commit.author.name
     
