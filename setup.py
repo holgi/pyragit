@@ -13,6 +13,7 @@ requires = [
     'mistune-contrib',
     'plaster_pastedeploy',
     'pygit2',
+    'pygments',
     'pyramid',
     'pyramid_debugtoolbar',
     'pyramid_jinja2',
