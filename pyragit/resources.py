@@ -28,10 +28,41 @@ class BaseResource:
     @property
     def type(self):
         ''' returns the type of the resource, either 'tree' or 'blob' '''
-        if self.pygit2_tree_entry is None:
-            # Root has no tree entry, but is a Folder
+        if self.__name__ is None:
+            # Root has no name, but is a Folder
             return 'tree'
         return self.pygit2_tree_entry.type
+    
+    def last_commit(self):
+        ''' get the last commit of the resource 
+        
+        from https://stackoverflow.com/questions/13293052/pygit2-blob-history
+        '''
+        if self.__name__ is None:
+            # last commit of Root is easily acessible
+            return self.commit
+            
+        # loops through all the commits
+        last_oid = None
+        last_commit = None
+        repo = self.request.repository
+        for commit in repo.walk(self.commit.oid, pygit2.GIT_SORT_TIME):
+
+            # checks if the file exists
+            if self.pygit2_tree_entry.name in commit.tree:
+                # has it changed since last commit?
+                # let's compare it's sha with the previous found sha
+                oid = self.pygit2_tree_entry.oid
+                has_changed = (oid != last_oid and last_oid)
+                if has_changed:
+                    return last_commit                
+                last_oid = oid
+            else:
+                last_oid = None
+
+            last_commit = commit
+            
+        return last_commit
 
 
 class Folder(BaseResource):
@@ -102,8 +133,8 @@ class Root(Folder):
     def __init__(self, request):
         super().__init__(None, None, None, request)        
         head = request.repository.head
-        commit = head.peel()
-        self._pygit2_object = commit.tree
+        self.commit = head.peel()
+        self._pygit2_object = self.commit.tree
 
 
 class File(BaseResource):

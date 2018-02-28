@@ -2,6 +2,9 @@
 
 {% block text %}
     {{ request.render_markdown(context.text)|safe }}
+    
+    <hr>
+    {{ context.last_commit() }}
 {% endblock text %}
 
 {% block explore %}
