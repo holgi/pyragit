@@ -1,7 +1,7 @@
 https
 =====
 
-```
+``` python
 def foobar(python):
     python = python.upper()
     print(python)
