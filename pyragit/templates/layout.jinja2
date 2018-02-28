@@ -10,10 +10,17 @@
         {% endif %}
         {% for resource in folder %}
             <li class="nav-item">
-                <a class="nav-link {{'active' if resource.__name__ == context.__name__}}" href="{{request.resource_path(resource)}}">
-                    <span class="pyragit-resource-type">{{'d' if resource.pygit2_tree_entry.type == 'tree' else 'f'}}</span>
-                    {{resource.__name__}}{{'/' if resource.pygit2_tree_entry.type == 'tree'}}
-                </a>
+                {% if resource.__name__ == context.__name__ %}
+                    <a class="nav-link active" href="{{request.resource_path(resource)}}">
+                        <span class="pyragit-resource-type">&gt;</span>
+                        {{resource.__name__}}
+                    </a>
+                {% else %}
+                    <a class="nav-link" href="{{request.resource_path(resource)}}">
+                        <span class="pyragit-resource-type">{{'d' if resource.pygit2_tree_entry.type == 'tree' else 'f'}}</span>
+                        {{resource.__name__}}{{'/' if resource.pygit2_tree_entry.type == 'tree'}}
+                    </a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

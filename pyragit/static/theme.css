@@ -1,18 +1,32 @@
-
 body { 
     font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; 
-    font-size: 90%; }
+    font-size: 90%; 
+    }
 
-pre {background: #e9ecef; padding: .25rem; border-radius: .25rem; }    
+.pyragit-explore a.nav-link { padding:0; }
+.pyragit-explore a.nav-link:hover { text-decoration:underline; }
+
+
+pre {
+    background: #e9ecef; 
+    padding: .25rem; 
+    border-radius: .25rem; 
+    }
+
 pre code {
     color: #666;
     }
 
+
 /* Pygments code highlighting styles */
-/* Theme "friendly" */
+/* Adopted from theme "friendly" */
+
 .highlight pre { padding: .25rem; }
-.highlight .hll { background-color: #ffffcc }
 .highlight  { background: #e9ecef; border-radius: .25rem; }
+.highlight-wrapper  { background: #e9ecef; border-radius: .25rem; margin-bottom: 1rem; }
+.highlight-wrapper pre { margin-bottom: 0rem; }
+.highlight-wrapper .linenos pre { color: #666; }
+.highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #60a0b0; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #007020; font-weight: bold } /* Keyword */

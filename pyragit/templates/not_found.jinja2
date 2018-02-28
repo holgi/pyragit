@@ -1,0 +1,15 @@
+{% extends "layout.jinja2" %}
+
+{% block text %}
+    <h1> Crivens ! </h1>
+    <p>
+        The thing you've been looking for is not here.
+    </p>
+    <p>
+        Go! Look somewhere else!
+    </p>
+{% endblock text %}
+
+{% block explore %}
+    {{ folder_list(request.root) }}
+{% endblock explore %}

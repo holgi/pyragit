@@ -1,8 +1,10 @@
+''' The view functions, connecting a context to an output '''
+
 import io
 import mimetypes
 
 from pyramid.response import FileIter
-from pyramid.view import view_config
+from pyramid.view import notfound_view_config, view_config
 
 
 @view_config(
@@ -10,6 +12,7 @@ from pyramid.view import view_config
     renderer='templates/folder.jinja2'
     )
 def folder(context, request):
+    ''' renders a Folder context '''
     return { }
 
 
@@ -18,11 +21,13 @@ def folder(context, request):
     renderer='templates/markdown.jinja2'
     )
 def markdown(context, request):
+    ''' renders a Markdown context '''
     return { }
 
 
 @view_config(context='pyragit.resources.File')
 def blob(context, request):
+    ''' a unrendered, binary file '''
     output = io.BytesIO(context.data)
     output.seek(0)
     response = request.response
@@ -37,3 +42,9 @@ def blob(context, request):
     headers['Content-Type'] = mime_type
     headers['Accept-Ranges'] = 'bite'
     return response
+
+
+@notfound_view_config(renderer='templates/not_found.jinja2')
+def notfound(context, request):
+    ''' File not found view '''
+    return {}
