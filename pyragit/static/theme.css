@@ -3,8 +3,18 @@ body {
     font-size: 90%; 
     }
 
-.pyragit-explore a.nav-link { padding:0; }
-.pyragit-explore a.nav-link:hover { text-decoration:underline; }
+.breadcrumb-item a {
+    color: #6c757d;
+ }
+
+.pyragit-explore a.nav-link { 
+    padding:0; 
+    color: #212529;
+    }
+
+.pyragit-explore a.nav-link:hover { 
+    text-decoration:underline; 
+    }
 
 blockquote {
     border-left: .5rem solid #e9ecef ;
