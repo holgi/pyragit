@@ -29,19 +29,21 @@ tests_require = [
 
 setup(
     name='pyragit',
-    version='0.0',
-    description='Pyragit',
+    version='0.1',
+    description='Simple rendering of markdown files in a git repository',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 3.6',
+        'Development Status :: 3 - Alpha',
         'Framework :: Pyramid',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
+        'License :: Other/Proprietary License'
     ],
     author='Holger Frey',
     author_email='mail@holgerfrey.de',
-    url='',
-    keywords='web pyramid pylons',
+    url='https://github.com/holgi/pyragit',
+    keywords='web pyramid pylons markdown git',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,

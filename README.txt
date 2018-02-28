@@ -1,5 +1,12 @@
-Pyragit
-=======
+Pyragit - simple rendering of markdown files in a git repo
+==========================================================
+
+This [Pyramid](https://trypyramid.com)-app text files in a git repository and 
+allowes access to (sub) folders.
+
+A file with an '.md' extension is considered a markdown file and is rendered 
+when accessed.
+
 
 Getting Started
 ---------------
@@ -16,13 +23,9 @@ Getting Started
 
     env/bin/pip install --upgrade pip setuptools
 
-- Install the project in editable mode with its testing requirements.
+- Install the project in editable mode
 
-    env/bin/pip install -e ".[testing]"
-
-- Run your project's tests.
-
-    env/bin/pytest
+    env/bin/pip install -e .
 
 - Run your project.
 
