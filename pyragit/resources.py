@@ -71,7 +71,7 @@ class BaseResource:
     
     @property
     def date(self):
-        return datetime.fromtimestamp(float(self.last_commit.author.time)
+        return datetime.fromtimestamp(float(self.last_commit.author.time))
 
 
 class Folder(BaseResource):
