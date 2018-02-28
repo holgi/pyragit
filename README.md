@@ -1,11 +1,9 @@
 Pyragit - simple rendering of markdown files in a git repo
 ==========================================================
 
-This [Pyramid](https://trypyramid.com)-app renders text files in a git repository 
-and allows access to (sub) folders.
+This [Pyramid](https://trypyramid.com)-app renders text files in a git repository and allows access to (sub) folders.
 
-A file with an '.md' extension is considered a markdown file and is rendered 
-when accessed.
+A file with an '.md' extension is considered a [markdown](https://daringfireball.net/projects/markdown/) file and is rendered when accessed.
 
 
 Getting Started
