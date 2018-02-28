@@ -1,10 +1,18 @@
 https
 =====
 
-``` python
+```python
     def foobar(python):
         python = python.upper()
         print(python)
+```
+
+```php
+<?php 
+
+function foo() {
+  /// ...
+}
 ```
 
 After installing the nginx webserver, the website (although currently only one page) is only served via the unencrypted http protocol. This should be changed.
