@@ -128,7 +128,8 @@ class Folder(BaseResource):
         texts = (e for e in blobs if e.name.endswith(md_ext))
         for entry in texts:
             name = entry.name[:-len(md_ext)]
-            yield Markdown(name, self, entry, self.request)                
+            if name != 'index':
+                yield Markdown(name, self, entry, self.request)                
     
     @property
     def index(self):
