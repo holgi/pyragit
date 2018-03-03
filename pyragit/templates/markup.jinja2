@@ -1,7 +1,7 @@
 {% extends "layout.jinja2" %}
 
 {% block text %}
-    {{ request.render_markdown(context.text)|safe }}
+    {{ context.render()|safe }}
 {% endblock text %}
 
 {% block explore %}

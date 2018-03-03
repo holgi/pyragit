@@ -2,7 +2,7 @@
 
 {% block text %}
     {% if context.index %}
-        {{ request.render_markdown(context.index.text)|safe }}
+        {{ context.index.render()|safe }}
     {% else %}
         <h1> Crivens ! </h1>
         <p>

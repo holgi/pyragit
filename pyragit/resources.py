@@ -2,6 +2,7 @@
 
 
 import pygit2
+import functools
 
 from datetime import datetime
 from pathlib import Path
@@ -11,41 +12,35 @@ from pyramid.exceptions import ConfigurationError
 class BaseResource:
     ''' base class for all resources '''
 
-    def __init__(self, name, parent, tree_entry, request):
-        self.__name__ = name
+    def __init__(self, tree_entry, parent):
+        self.__name__ = tree_entry.name
         self.__parent__ = parent
         self.pygit2_tree_entry = tree_entry
-        self.request = request
-        self._pygit2_object = None
-        self._last_commit = None
+        self.request = parent.request
     
     @property
+    @functools.lru_cache(maxsize=128)
     def pygit2_object(self):
         ''' lazy loading of the pygit2 object '''
-        if self._pygit2_object is None:
-            oid = self.pygit2_tree_entry.oid
-            self._pygit2_object = self.request.repository[oid]
-        return self._pygit2_object
+        oid = self.pygit2_tree_entry.oid
+        return self.request.repository[oid]
 
     @property
     def type(self):
         ''' returns the type of the resource, either 'tree' or 'blob' '''
-        if self.__name__ is None:
-            # Root has no name, but is a Folder
-            return 'tree'
-        return self.pygit2_tree_entry.type
+        # Root has no tree entry, but is a Folder
+        return 'tree' if self.__name__ is None else self.pygit2_tree_entry.type
     
     @property
+    @functools.lru_cache(maxsize=128)
     def last_commit(self):
         ''' get the last commit of the resource 
         
         from https://stackoverflow.com/questions/13293052/pygit2-blob-history
-        '''
-        if self._last_commit:
-            return self._last_commit
-            
+        ''' 
         # loops through all the commits
         last_oid = None
+        last_commit = None
         repo = self.request.repository
         for commit in repo.walk(repo.head.target, pygit2.GIT_SORT_TIME):
 
@@ -56,14 +51,14 @@ class BaseResource:
                 oid = self.pygit2_tree_entry.oid
                 has_changed = (oid != last_oid and last_oid)
                 if has_changed:
-                    return self._last_commit                
+                    return last_commit
                 last_oid = oid
             else:
                 last_oid = None
 
-            self._last_commit = commit
+            last_commit = commit
             
-        return self._last_commit
+        return last_commit
 
     @property
     def author(self):
@@ -77,6 +72,18 @@ class BaseResource:
 class Folder(BaseResource):
     ''' Resource representing a git tree (like a folder in a file system) '''
     
+    @property
+    @functools.lru_cache(maxsize=128)
+    def index(self):
+        ''' get the markup index file of the folder or None '''
+        blobs = (e for e in self.pygit2_object if e.type=='blob')
+        index_files = (e for e in blobs if e.name.lower().startswith('index.'))
+        for entry in index_files:
+            renderer = self.request.get_markup_renderer(entry.name)
+            if renderer:
+                return Markup(entry, self, renderer)
+        return None
+    
     def __getitem__(self, key):
         ''' Dict like access to child resources '''
         
@@ -84,34 +91,20 @@ class Folder(BaseResource):
         if key.startswith('.'):
             raise KeyError
         
-        # try to directly access a tree entry, 
-        # only blob (binary file) and trees (folders) are allowed
-        try:
-            tree_entry = self.pygit2_object[key]
-            if tree_entry.type == 'blob':
-                return File(key, self, tree_entry, self.request)
-            elif tree_entry.type == 'tree':
-                return Folder(key, self, tree_entry, self.request)
-        except KeyError:
-            pass
+        tree_entry = self.pygit2_object[key]
+        if tree_entry.type == 'tree':
+            return Folder(tree_entry, self)
+            
+        if tree_entry.type != 'blob':
+            # non file entry, might be a git note object
+            # or something else
+            raise KeyError
         
-        # look for a text-file, that should be rendered
-        markdown = self._search_markdown_file(key)
-        if markdown:
-            return markdown         
-       
-        # nothing found, raise Error
-        raise KeyError
-    
-    def _search_markdown_file(self, name):
-        ''' look for a  markdown file '''
-        markdown_file = name + self.request.markdown_extension
-        blobs = (e for e in self.pygit2_object if e.type=='blob')
-        for entry in blobs:
-            if entry.name.lower() == markdown_file.lower():
-                return Markdown(name, self, entry, self.request)
-        return None
-    
+        renderer = self.request.get_markup_renderer(key)
+        if renderer is None:
+            return File(tree_entry, self)    
+        else:
+            return Markup(tree_entry, self, renderer)
     
     def __iter__(self):
         ''' iterate over renderable child resources '''
@@ -121,30 +114,38 @@ class Folder(BaseResource):
         # first list the folders
         trees = (e for e in ordered if e.type=='tree')
         for entry in trees:
-            yield Folder(entry.name, self, entry, self.request)
-        # then list the markdown files
-        md_ext = self.request.markdown_extension
+            yield Folder(entry, self)
+        # then list the markup files
         blobs = (e for e in ordered if e.type=='blob')
-        texts = (e for e in blobs if e.name.endswith(md_ext))
-        for entry in texts:
-            name = entry.name[:-len(md_ext)]
-            if name != 'index':
-                yield Markdown(name, self, entry, self.request)                
-    
-    @property
-    def index(self):
-        ''' get the markdown index file of the folder or None '''
-        return self._search_markdown_file('index')
+        # except the index file used
+        index_name = self.index.__name__ if self.index else None
+        non_index = (e for e in blobs if e.name != index_name)
+        for entry in non_index:
+            renderer = self.request.get_markup_renderer(entry.name)
+            if renderer:
+                yield Markup(entry, self, renderer)
 
 
 class Root(Folder):
     ''' the root resource for traversal '''
 
     def __init__(self, request):
-        super().__init__(None, None, None, request)        
-        head = request.repository.head
-        self._last_commit = head.peel()
-        self._pygit2_object = self._last_commit.tree
+        self.__name__ = None
+        self.__parent__ = None
+        self.request = request   
+    
+    @property
+    def pygit2_object(self):
+        ''' lazy loading of the pygit2 object not required on root resource'''
+        return self.last_commit.tree
+        
+    @property
+    def last_commit(self):
+        ''' get the last commit of the resource 
+        
+        On the root resource, this is only a simple lookup
+        ''' 
+        return self.request.repository.head.peel()
 
 
 class File(BaseResource):
@@ -161,13 +162,21 @@ class File(BaseResource):
         return self.pygit2_object.size
 
 
-class Markdown(BaseResource):
-    ''' Resource for a Markdown file that could be rendered '''
+class Markup(BaseResource):
+    ''' Resource for a markup file that could be rendered '''
+    
+    def __init__(self, tree_entry, parent, rendering_func):
+        super().__init__(tree_entry, parent)
+        self.renderer = rendering_func
     
     @property
     def text(self):
         ''' access the text content of the file '''
         return self.pygit2_object.data.decode('utf-8')
+        
+    def render(self):
+        ''' returned the rendered representation of the markup file'''
+        return self.renderer(self.text)
 
 
 
@@ -191,16 +200,5 @@ def includeme(config):
         reify=True
         )
     
-    markdown_extension = settings.get('pyragit.markdown_extension', None)
-    if markdown_extension is None:
-        raise ConfigurationError('Markdown Extension not set')
-
-    # make request.markdown_extension available for use in Pyramid
-    config.add_request_method(
-        lambda r: markdown_extension,
-        'markdown_extension',
-        reify=True
-        )
-
     # set the root factory for traverssal
     config.set_root_factory(Root)

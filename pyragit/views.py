@@ -17,11 +17,11 @@ def folder(context, request):
 
 
 @view_config(
-    context='pyragit.resources.Markdown', 
-    renderer='templates/markdown.jinja2'
+    context='pyragit.resources.Markup', 
+    renderer='templates/markup.jinja2'
     )
 def markdown(context, request):
-    ''' renders a Markdown context '''
+    ''' renders a markup context '''
     return { }
 
 
