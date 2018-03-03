@@ -3,6 +3,9 @@
 
 {% macro folder_list(folder) -%}
     <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="{{request.resource_path(folder)}}">d .</a>
+        </li>
         {% if folder != request.root %}
             <li class="nav-item">
                 <a class="nav-link" href="{{request.resource_path(folder.__parent__)}}">d ..</a>
