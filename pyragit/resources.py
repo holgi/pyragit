@@ -55,7 +55,7 @@ class BaseResource:
             if git_path in commit.tree:
                 # has it changed since last commit?
                 # let's compare it's sha with the previous found sha
-                oid = self.pygit2_tree_entry.oid
+                oid = commit.tree[git_path].oid
                 has_changed = (oid != last_oid and last_oid)
                 if has_changed:
                     return last_commit
