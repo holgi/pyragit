@@ -38,34 +38,36 @@ class BaseResource:
         
         from https://stackoverflow.com/questions/13293052/pygit2-blob-history
         ''' 
-        git_path = self.request.resource_path(self)
+        # get the relative path inside the git repo and
         # remove trailing and leading slashes if present
+        git_path = self.request.resource_path(self)
         if git_path.startswith('/'):
             git_path = git_path[1:]
         if git_path.endswith('/'):
             git_path = git_path[:-1]
             
-        # loops through all the commits
-        last_oid = None
+        # the latest git object id to compare earlier commits to
+        last_oid = self.pygit2_tree_entry.oid
         last_commit = None
         repo = self.request.repository
+        # walk through every commit, starting at the latests
         for commit in repo.walk(repo.head.target, pygit2.GIT_SORT_TIME):
-
-            # checks if the file exists
+            # get the object id of the git path if it exists or None
             if git_path in commit.tree:
-                # has it changed since last commit?
-                # let's compare it's sha with the previous found sha
                 oid = commit.tree[git_path].oid
-                has_changed = (oid != last_oid and last_oid)
-                print(oid, last_oid, has_changed)
-                if has_changed:
-                    return last_commit
-                last_oid = oid
             else:
-                last_oid = None
+                oid = None
+            # has the object id changed to the commit before?
+            # will be False on the latest commit since the current object id
+            # was stored before
+            if oid != last_oid:
+                return last_commit
 
+            # the current commit object is now the last commit object
             last_commit = commit
         
+        # looped through all commits, never changed, therefore it was present
+        # in the first commit ever made
         return last_commit
 
     @property
