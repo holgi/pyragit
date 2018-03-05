@@ -57,6 +57,7 @@ class BaseResource:
                 # let's compare it's sha with the previous found sha
                 oid = commit.tree[git_path].oid
                 has_changed = (oid != last_oid and last_oid)
+                print(oid, last_oid, has_changed)
                 if has_changed:
                     return last_commit
                 last_oid = oid
@@ -64,7 +65,7 @@ class BaseResource:
                 last_oid = None
 
             last_commit = commit
-            
+        
         return last_commit
 
     @property
