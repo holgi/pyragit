@@ -38,6 +38,13 @@ class BaseResource:
         
         from https://stackoverflow.com/questions/13293052/pygit2-blob-history
         ''' 
+        git_path = self.request.resource_path(self)
+        # remove trailing and leading slashes if present
+        if git_path.startswith('/'):
+            git_path = git_path[1:]
+        if git_path.endswith('/'):
+            git_path = git_path[:-1]
+            
         # loops through all the commits
         last_oid = None
         last_commit = None
@@ -45,7 +52,7 @@ class BaseResource:
         for commit in repo.walk(repo.head.target, pygit2.GIT_SORT_TIME):
 
             # checks if the file exists
-            if self.pygit2_tree_entry.name in commit.tree:
+            if git_path in commit.tree:
                 # has it changed since last commit?
                 # let's compare it's sha with the previous found sha
                 oid = self.pygit2_tree_entry.oid
