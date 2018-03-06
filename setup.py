@@ -18,14 +18,14 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_jinja2',
     'waitress',
-]
+    ]
 
 tests_require = [
     'flake8',
     'pytest',
     'pytest-cov',
     'WebTest >= 1.3.1',  # py3 compat
-]
+    ]
 
 setup(
     name='pyragit',
@@ -39,7 +39,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
         'License :: Other/Proprietary License'
-    ],
+        ],
     author='Holger Frey',
     author_email='mail@holgerfrey.de',
     url='https://github.com/holgi/pyragit',
@@ -49,11 +49,11 @@ setup(
     zip_safe=False,
     extras_require={
         'testing': tests_require,
-    },
+        },
     install_requires=requires,
     entry_points={
         'paste.app_factory': [
             'main = pyragit:main',
-        ],
-    },
-)
+            ],
+        },
+    )

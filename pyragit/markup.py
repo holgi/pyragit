@@ -27,7 +27,7 @@ def includeme(config):
     renderer_dict = {
         '.md': render_markdown,
         '.txt': render_text
-    }
+        }
 
     def get_markup_renderer(filename):
         name, dot, ext = filename.rpartition('.')

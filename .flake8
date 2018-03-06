@@ -1,0 +1,12 @@
+[flake8]
+ignore = W293
+exclude =
+    .git,
+    .pytest_cache
+    .venv
+    __pycache__,
+    docs/source/conf.py,
+    old,
+    build,
+    dist
+hang_closing = True
