@@ -8,21 +8,21 @@ from pyramid.view import notfound_view_config, view_config
 
 
 @view_config(
-    context='pyragit.resources.Folder', 
+    context='pyragit.resources.Folder',
     renderer='templates/folder.jinja2'
     )
 def folder(context, request):
     ''' renders a Folder context '''
-    return { }
+    return {}
 
 
 @view_config(
-    context='pyragit.resources.Markup', 
+    context='pyragit.resources.Markup',
     renderer='templates/markup.jinja2'
     )
 def markdown(context, request):
     ''' renders a markup context '''
-    return { }
+    return {}
 
 
 @view_config(context='pyragit.resources.File')

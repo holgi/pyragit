@@ -1,7 +1,6 @@
 ''' setup of the markup renderers '''
 
 import mistune
-import re
 
 from mistune_contrib import highlight
 

@@ -5,7 +5,6 @@ import pygit2
 import functools
 
 from datetime import datetime
-from pathlib import Path
 from pyramid.exceptions import ConfigurationError
 
 
@@ -34,15 +33,14 @@ class BaseResource:
     @property
     @functools.lru_cache(maxsize=128)
     def last_commit(self):
-        ''' get the last commit of the resource 
+        ''' get the last commit of the resource
         
         from https://stackoverflow.com/questions/13293052/pygit2-blob-history
-        ''' 
+        '''
         # get the relative path inside the git repo and
         # remove trailing and leading slashes if present
         git_path = self.request.resource_path(self)
-        if git_path.startswith('/'):
-            git_path = git_path[1:]
+        git_path = git_path[1:]
         if git_path.endswith('/'):
             git_path = git_path[:-1]
             
@@ -86,7 +84,7 @@ class Folder(BaseResource):
     @functools.lru_cache(maxsize=128)
     def index(self):
         ''' get the markup index file of the folder or None '''
-        blobs = (e for e in self.pygit2_object if e.type=='blob')
+        blobs = (e for e in self.pygit2_object if e.type == 'blob')
         index_files = (e for e in blobs if e.name.lower().startswith('index.'))
         for entry in index_files:
             renderer = self.request.get_markup_renderer(entry.name)
@@ -112,7 +110,7 @@ class Folder(BaseResource):
         
         renderer = self.request.get_markup_renderer(key)
         if renderer is None:
-            return File(tree_entry, self)    
+            return File(tree_entry, self)
         else:
             return Markup(tree_entry, self, renderer)
     
@@ -122,11 +120,11 @@ class Folder(BaseResource):
         allowed = (e for e in self.pygit2_object if not e.name.startswith('.'))
         ordered = sorted(allowed, key=lambda e: e.name.lower())
         # first list the folders
-        trees = (e for e in ordered if e.type=='tree')
+        trees = (e for e in ordered if e.type == 'tree')
         for entry in trees:
             yield Folder(entry, self)
         # then list the markup files
-        blobs = (e for e in ordered if e.type=='blob')
+        blobs = (e for e in ordered if e.type == 'blob')
         # except the index file used
         index_name = self.index.__name__ if self.index else None
         non_index = (e for e in blobs if e.name != index_name)
@@ -142,7 +140,7 @@ class Root(Folder):
     def __init__(self, request):
         self.__name__ = None
         self.__parent__ = None
-        self.request = request   
+        self.request = request
     
     @property
     def pygit2_object(self):
@@ -151,10 +149,10 @@ class Root(Folder):
         
     @property
     def last_commit(self):
-        ''' get the last commit of the resource 
+        ''' get the last commit of the resource
         
         On the root resource, this is only a simple lookup
-        ''' 
+        '''
         return self.request.repository.head.peel()
 
 
@@ -187,7 +185,6 @@ class Markup(BaseResource):
     def render(self):
         ''' returned the rendered representation of the markup file'''
         return self.renderer(self.text)
-
 
 
 def includeme(config):
