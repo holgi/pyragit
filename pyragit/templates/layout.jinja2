@@ -26,8 +26,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="{{ context.author }}">
-    <meta name="date" content="{{ context.date.strftime('%Y-%m-%d') }}">
+    {% if context.date %}
+        <meta name="author" content="{{ context.author }}">
+        <meta name="date" content="{{ context.date.strftime('%Y-%m-%d') }}">
+    {% endif %}
     <!--
         <link rel="shortcut icon" href="{{request.static_url('pyragit:static/pyramid-16x16.png')}}">
     -->
@@ -75,9 +77,11 @@
                     <p>Text Column</p>
                 {% endblock text %}
                 <hr>
+                {% if context.date %}
                 <p class="pyragit-meta text-muted font-weight-light">
                     Last edited on {{ context.date.strftime('%Y-%m-%d') }}
                 </p>
+                {% endif %}
             </div>
             <div class="col-lg mt-2 pyragit-explore">
                 {% block explore %}
