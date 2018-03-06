@@ -20,7 +20,7 @@ def folder(context, request):
     context='pyragit.resources.Markup',
     renderer='templates/markup.jinja2'
     )
-def markdown(context, request):
+def markup(context, request):
     ''' renders a markup context '''
     return {}
 
@@ -35,10 +35,7 @@ def blob(context, request):
     headers = response.headers
     mime_type, _ = mimetypes.guess_type(context.__name__)
     if mime_type is None:
-        if context.__name__.endswith(request.markdown_extension):
-            mime_type = 'text/plain'
-        else:
-            mime_type = 'application/download'
+        mime_type = 'application/download'
     headers['Content-Type'] = mime_type
     headers['Accept-Ranges'] = 'bite'
     return response
