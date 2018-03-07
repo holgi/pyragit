@@ -21,6 +21,7 @@ requires = [
     ]
 
 tests_require = [
+    'beautifulsoup4'
     'flake8',
     'pytest',
     'pytest-cov',

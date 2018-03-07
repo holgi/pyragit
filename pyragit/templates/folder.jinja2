@@ -4,12 +4,12 @@
     {% if context.index %}
         {{ context.index.render()|safe }}
     {% else %}
-        <h1> Crivens ! </h1>
+        <h1>Crivens!</h1>
         <p>
             If a markdown document is added at this path:
         </p>
         <p class="text-info">
-            ~/{{ request.traversed|join('/') }}{{'/' if request.traversed}}index{{ request.markdown_extension }}
+            ~/{{ request.traversed|join('/') }}{{'/' if request.traversed}}index.md
         </p>
         <p>
             it's content would be displayed here…
