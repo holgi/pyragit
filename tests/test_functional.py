@@ -122,3 +122,15 @@ def test_download(testapp):
     assert response.headers['Content-Type'] == 'application/download'
     expected_body = b'other or unknown files should be delivered as binary.'
     assert response.body == expected_body
+
+def test_file_not_found(testapp):
+    response = testapp.get('/unknown/')
+    # renders index file
+    assert '''The thing you've been looking for is not here.''' in response
+    explore_links = [
+        ('/', 'd .'),
+        ('/down/', 'd down/'),
+        ('/desrcription.md/', 'f desrcription.md'),
+        ('/multi-commit.md/', 'f multi-commit.md'),
+        ]
+    check_explore_links(response, explore_links)
