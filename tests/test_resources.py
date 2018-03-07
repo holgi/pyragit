@@ -33,10 +33,10 @@ def root(request_object):
 
 @pytest.mark.parametrize(
     'name,gitid', [
-        ('down', 'be09d04119a9db0b3a41a81d5afa3d50b811d352'),
-        ('index.md', 'aaf471a51ed8df6929cd32a80c8e8cf97253d928'),
-        ('desrcription.md', 'aaf471a51ed8df6929cd32a80c8e8cf97253d928'),
-        ('multi-commit.md', 'ff1b13b250c1835817895f5f9399f40c6d675e75')
+        ('down', 'ae046b24b643b7d6625f1e302a11e7b521f3d24c'),
+        ('index.md', 'fb6f8e469934249d9c89d4190a1412f9a5573865'),
+        ('desrcription.md', '8b2b58560a73261789f8f1308378e537719d69d1'),
+        ('multi-commit.md', '616f5deb2ec226bebb31291576338cd951628810')
         ]
     )
 def test_base_resource_last_commmit(root, name, gitid):
@@ -48,7 +48,7 @@ def test_base_resource_last_commmit(root, name, gitid):
 
 def test_root_last_commit(root):
     assert isinstance(root.last_commit, pygit2.Commit)
-    assert root.last_commit.hex == '1aa435e34fa48546b03fa17cfca785e7b53fe0e4'
+    assert root.last_commit.hex == 'ae046b24b643b7d6625f1e302a11e7b521f3d24c'
  
 
 @pytest.mark.parametrize(
@@ -75,7 +75,7 @@ def test_base_resource_author(root):
 
 def test_base_resource_date(root):
     import datetime
-    assert root.date == datetime.datetime(2018, 3, 6, 16, 51, 36)
+    assert root.date == datetime.datetime(2018, 3, 7, 9, 57, 14)
 
 
 def test_root_init(request_object):
