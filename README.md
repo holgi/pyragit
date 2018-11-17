@@ -15,16 +15,20 @@ Getting Started
 
 - Create a Python virtual environment.
 
-    python3 -m venv env
+    python3 -m venv .venv
+
+- activate the virtual environment
+
+    Source .venv/bin/activate
 
 - Upgrade packaging tools.
 
-    env/bin/pip install --upgrade pip setuptools
+    pip install --upgrade pip setuptools
 
 - Install the project in editable mode
 
-    env/bin/pip install -e .
+    pip install -e .
 
 - Run your project.
 
-    env/bin/pserve development.ini
+    pserve development.ini
