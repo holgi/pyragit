@@ -1,5 +1,3 @@
-
-
 [build-system]
 requires = ["flit"]
 build-backend = "flit.buildapi"
@@ -24,7 +22,15 @@ classifiers = [
 ]
 
 requires = [
-
+    'mistune',
+    'mistune-contrib',
+    'plaster_pastedeploy',
+    'pygit2',
+    'pygments',
+    'pyramid',
+    'pyramid_debugtoolbar',
+    'pyramid_jinja2',
+    'waitress',
 ]
 requires-python = ">=3.7"
 
@@ -33,6 +39,8 @@ test = [
     "pytest >=4.0.0",
     "pytest-cov",
     "pytest-mock",
+    "beautifulsoup4",
+    "WebTest >= 1.3.1",  # py3 compat
 ]
 dev = [
     "black",
@@ -41,7 +49,6 @@ dev = [
     "isort",
     "keyring",
     "pre-commit",
-    "tox",
 ]
 
 [tool.black]

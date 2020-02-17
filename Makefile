@@ -63,9 +63,6 @@ coverage: ## full test suite, check code coverage and open coverage report
 	coverage html
 	$(BROWSER) htmlcov/index.html
 
-tox:  ## run fully isolated tests with tox
-	tox
-
 install:  ## install updated project.toml with flint
 	flit install --pth-file
 
