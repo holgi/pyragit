@@ -13,21 +13,10 @@ Getting Started
 
     cd pyragit
 
-- Create a Python virtual environment.
+- Setup the development environment.
 
-    python3 -m venv .venv
-
-- activate the virtual environment
-
+    make devenv
     Source .venv/bin/activate
-
-- Upgrade packaging tools.
-
-    pip install --upgrade pip setuptools
-
-- Install the project in editable mode
-
-    pip install -e .
 
 - Run your project.
 
