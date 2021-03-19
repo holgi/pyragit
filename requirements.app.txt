@@ -6,7 +6,7 @@ flit==2.2.0
 flit-core==2.2.0
 hupper==1.9.1
 idna==2.8
-Jinja2==2.11.1
+Jinja2==2.11.3
 Mako==1.1.1
 MarkupSafe==1.1.1
 mistune==0.8.4
