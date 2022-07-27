@@ -66,4 +66,4 @@ target/
 .python-version
 
 # content repo in production
-content-repo/
+content-repo
