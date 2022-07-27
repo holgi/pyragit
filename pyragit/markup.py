@@ -10,7 +10,7 @@ class HighlightRenderer(highlight.HighlightMixin, mistune.HTMLRenderer):
     options = {}
 
     def block_code(self, text, lang=None):
-        super().block_code(text, lang)
+        return super().block_code(text, lang)
 
 
 def render_text(content):
