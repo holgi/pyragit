@@ -50,8 +50,8 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 
 lint: ## reformat with black and check style with flake8
-	isort -rc pyragit
-	isort -rc tests
+	isort pyragit
+	isort tests
 	black pyragit tests
 	flake8 pyragit tests
 
