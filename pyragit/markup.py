@@ -7,7 +7,8 @@ from mistune_contrib import highlight
 class HighlightRenderer(highlight.HighlightMixin, mistune.HTMLRenderer):
     """Markdown renderer with syntax highlighting"""
 
-    pass
+    def block_code(self, text, lang=None):
+        super().block_code(text, lang)
 
 
 def render_text(content):
