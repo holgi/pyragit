@@ -4,7 +4,7 @@ import mistune
 from mistune_contrib import highlight
 
 
-class HighlightRenderer(highlight.HighlightMixin, mistune.Renderer):
+class HighlightRenderer(highlight.HighlightMixin, mistune.HTMLRenderer):
     """ Markdown renderer with syntax highlighting"""
 
     pass
@@ -21,7 +21,7 @@ def includeme(config):
 
     Activate this setup using ``config.include('pyragit.markdown')``.
     """
-    md_renderer = HighlightRenderer(inlinestyles=False, linenos=False)
+    md_renderer = HighlightRenderer()
     render_markdown = mistune.Markdown(renderer=md_renderer)
 
     renderer_dict = {".md": render_markdown, ".txt": render_text}

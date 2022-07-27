@@ -25,14 +25,14 @@ requires = [
     'mistune',
     'mistune-contrib',
     'plaster_pastedeploy',
-    'pygit2',
+    'paste',
     'pygments',
     'pyramid',
     'pyramid_debugtoolbar',
     'pyramid_jinja2',
     'waitress',
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.6.9"
 
 [tool.flit.metadata.requires-extra]
 test = [

@@ -209,7 +209,7 @@ def includeme(config):
 
     # make request.repository available for use in Pyramid
     config.add_request_method(
-        lambda r: pygit2.Repository(repo_path), "repository", reify=True
+        lambda r: pygit2.Repository(repo_path, pygit2.GIT_REPOSITORY_OPEN_BARE), "repository", reify=True
     )
 
     # set the root factory for traverssal

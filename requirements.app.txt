@@ -15,7 +15,7 @@ PasteDeploy==2.1.0
 plaster==1.0
 plaster-pastedeploy==0.7
 pycparser==2.19
-pygit2==1.0.3
+pygit2>=1.1.1
 Pygments==2.5.2
 pyragit==0.1.1
 pyramid==1.10.4

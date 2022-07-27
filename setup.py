@@ -12,7 +12,7 @@ requires = [
     'mistune',
     'mistune-contrib',
     'plaster_pastedeploy',
-    'pygit2',
+    'pygit2>=1.1.1',
     'pygments',
     'pyramid',
     'pyramid_debugtoolbar',
