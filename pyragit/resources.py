@@ -209,7 +209,11 @@ def includeme(config):
 
     # make request.repository available for use in Pyramid
     config.add_request_method(
-        lambda r: pygit2.Repository(pygit2.discover_repository(repo_path)),
+        lambda r: pygit2.Repository(
+            pygit2.discover_repository(repo_path),
+            pygit2.GIT_REPOSITORY_OPEN_BARE
+            | pygit2.GIT_REPOSITORY_OPEN_NO_DOTGIT,
+        ),
         "repository",
         reify=True,
     )
