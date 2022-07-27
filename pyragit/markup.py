@@ -5,13 +5,13 @@ from mistune_contrib import highlight
 
 
 class HighlightRenderer(highlight.HighlightMixin, mistune.HTMLRenderer):
-    """ Markdown renderer with syntax highlighting"""
+    """Markdown renderer with syntax highlighting"""
 
     pass
 
 
 def render_text(content):
-    """ a simple renderer for text documents: replace new lines with <br> """
+    """a simple renderer for text documents: replace new lines with <br>"""
     return "<br>".join(content.splitlines())
 
 

@@ -62,3 +62,5 @@ target/
 # Mac Stuff
 .DS_Store
 
+# pyenv
+.python-version

@@ -11,7 +11,7 @@ from pyramid.response import FileIter
     context="pyragit.resources.Folder", renderer="templates/folder.jinja2"
 )
 def folder(context, request):
-    """ renders a Folder context """
+    """renders a Folder context"""
     return {}
 
 
@@ -19,13 +19,13 @@ def folder(context, request):
     context="pyragit.resources.Markup", renderer="templates/markup.jinja2"
 )
 def markup(context, request):
-    """ renders a markup context """
+    """renders a markup context"""
     return {}
 
 
 @view_config(context="pyragit.resources.File")
 def blob(context, request):
-    """ a unrendered, binary file """
+    """a unrendered, binary file"""
     output = io.BytesIO(context.data)
     output.seek(0)
     response = request.response
@@ -41,5 +41,5 @@ def blob(context, request):
 
 @notfound_view_config(renderer="templates/not_found.jinja2")
 def notfound(context, request):
-    """ File not found view """
+    """File not found view"""
     return {}

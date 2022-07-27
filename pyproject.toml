@@ -2,14 +2,16 @@
 requires = ["flit"]
 build-backend = "flit.buildapi"
 
-[tool.flit.metadata]
-module = "pyragit"
-dist-name = "pyragit"
-author = "Holger Frey"
-author-email = "mail@holgerfrey.de"
-home-page = "https://github.com/holgi/pyragit"
-description-file = "README.md"
-license = "Beerware"
+[project]
+name = "pyragit"
+authors = [
+    {name = "Holger Frey", email = "mail@holgerfrey.de"},
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dynamic = ["version", "description"]
+license = {text = "Beerware"}
+
 
 # see https://pypi.org/classifiers/
 classifiers = [
@@ -21,20 +23,20 @@ classifiers = [
     "License :: Freely Distributable",
 ]
 
-requires = [
+dependencies = [
     'mistune',
     'mistune-contrib',
     'plaster_pastedeploy',
     'paste',
     'pygments',
+    'pygit2<1.9',
     'pyramid',
     'pyramid_debugtoolbar',
     'pyramid_jinja2',
     'waitress',
 ]
-requires-python = ">=3.6.9"
 
-[tool.flit.metadata.requires-extra]
+[project.optional-dependencies]
 test = [
     "pytest >=4.0.0",
     "pytest-cov",
@@ -50,6 +52,13 @@ dev = [
     "keyring",
     "pre-commit",
 ]
+
+[project.urls]
+Documentation = "https://github.com/holgi/pyragit"
+Source = "https://github.com/holgi/pyragit"
+
+[project.entry-points."paste.app_factory"]
+main = "pyragit:main"
 
 [tool.black]
 line-length = 79

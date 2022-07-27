@@ -9,7 +9,7 @@ from pyramid.exceptions import ConfigurationError
 
 
 class BaseResource:
-    """ base class for all resources """
+    """base class for all resources"""
 
     def __init__(self, tree_entry, parent):
         self.__name__ = tree_entry.name
@@ -20,13 +20,13 @@ class BaseResource:
     @property
     @functools.lru_cache(maxsize=128)
     def pygit2_object(self):
-        """ lazy loading of the pygit2 object """
+        """lazy loading of the pygit2 object"""
         oid = self.pygit2_tree_entry.oid
         return self.request.repository[oid]
 
     @property
     def type(self):
-        """ returns the type of the resource, either 'tree' or 'blob' """
+        """returns the type of the resource, either 'tree' or 'blob'"""
         # Root has no tree entry, but is a Folder
         if self.__name__ is None:
             return "tree"
@@ -38,7 +38,7 @@ class BaseResource:
     @property
     @functools.lru_cache(maxsize=128)
     def last_commit(self):
-        """ get the last commit of the resource
+        """get the last commit of the resource
 
         from https://stackoverflow.com/questions/13293052/pygit2-blob-history
         """
@@ -83,12 +83,12 @@ class BaseResource:
 
 
 class Folder(BaseResource):
-    """ Resource representing a git tree (like a folder in a file system) """
+    """Resource representing a git tree (like a folder in a file system)"""
 
     @property
     @functools.lru_cache(maxsize=128)
     def index(self):
-        """ get the markup index file of the folder or None """
+        """get the markup index file of the folder or None"""
         blobs = (
             e for e in self.pygit2_object if e.type == pygit2.GIT_OBJ_BLOB
         )
@@ -100,7 +100,7 @@ class Folder(BaseResource):
         return None
 
     def __getitem__(self, key):
-        """ Dict like access to child resources """
+        """Dict like access to child resources"""
 
         # hidden files (starting with a dot) are forbidden to access
         if key.startswith("."):
@@ -122,7 +122,7 @@ class Folder(BaseResource):
             return Markup(tree_entry, self, renderer)
 
     def __iter__(self):
-        """ iterate over renderable child resources """
+        """iterate over renderable child resources"""
         # exclude hidden files and order by lowre case name
         allowed = (e for e in self.pygit2_object if not e.name.startswith("."))
         ordered = sorted(allowed, key=lambda e: e.name.lower())
@@ -142,7 +142,7 @@ class Folder(BaseResource):
 
 
 class Root(Folder):
-    """ the root resource for traversal """
+    """the root resource for traversal"""
 
     def __init__(self, request):
         self.__name__ = None
@@ -151,12 +151,12 @@ class Root(Folder):
 
     @property
     def pygit2_object(self):
-        """ lazy loading of the pygit2 object not required on root resource"""
+        """lazy loading of the pygit2 object not required on root resource"""
         return self.last_commit.tree
 
     @property
     def last_commit(self):
-        """ get the last commit of the resource
+        """get the last commit of the resource
 
         On the root resource, this is only a simple lookup
         """
@@ -164,21 +164,21 @@ class Root(Folder):
 
 
 class File(BaseResource):
-    """ Resource for a (binary) file """
+    """Resource for a (binary) file"""
 
     @property
     def data(self):
-        """ the binary data of the file """
+        """the binary data of the file"""
         return self.pygit2_object.data
 
     @property
     def size(self):
-        """ the size of the binary data of the file """
+        """the size of the binary data of the file"""
         return self.pygit2_object.size
 
 
 class Markup(BaseResource):
-    """ Resource for a markup file that could be rendered """
+    """Resource for a markup file that could be rendered"""
 
     def __init__(self, tree_entry, parent, rendering_func):
         super().__init__(tree_entry, parent)
@@ -186,11 +186,11 @@ class Markup(BaseResource):
 
     @property
     def text(self):
-        """ access the text content of the file """
+        """access the text content of the file"""
         return self.pygit2_object.data.decode("utf-8")
 
     def render(self):
-        """ returned the rendered representation of the markup file"""
+        """returned the rendered representation of the markup file"""
         return self.renderer(self.text)
 
 
@@ -209,7 +209,11 @@ def includeme(config):
 
     # make request.repository available for use in Pyramid
     config.add_request_method(
-        lambda r: pygit2.Repository(repo_path, pygit2.GIT_REPOSITORY_OPEN_BARE), "repository", reify=True
+        lambda r: pygit2.Repository(
+            repo_path, pygit2.GIT_REPOSITORY_OPEN_BARE
+        ),
+        "repository",
+        reify=True,
     )
 
     # set the root factory for traverssal

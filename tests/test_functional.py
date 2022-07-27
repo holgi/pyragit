@@ -8,7 +8,7 @@ from . import repo_path  # Noqa: F401
 
 @pytest.fixture(scope="module")
 def testapp(repo_path):  # Noqa: F811
-    """ fixture for using webtest """
+    """fixture for using webtest"""
     from pyragit import main
 
     settings = {"pyragit.repository_path": repo_path}
@@ -28,8 +28,9 @@ def check_explore_links(response, expected):
 
 
 def test_startup_raises_error_on_not_set_repo_path():
-    from pyragit import main
     from pyramid.exceptions import ConfigurationError
+
+    from pyragit import main
 
     test_settings = {}
     with pytest.raises(ConfigurationError):
@@ -55,7 +56,8 @@ def test_folder_with_index(testapp):
     response = testapp.get("/down/")
     # renders index file
     assert "<base href=" not in response
-    assert '<h1>"Folders" are a thing</h1>' in response
+    print(response)
+    assert "<h1>&quot;Folders&quot; are a thing</h1>" in response
     # test explore list
     explore_links = [
         ("/down/", "> ."),
