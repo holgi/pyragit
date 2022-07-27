@@ -211,7 +211,8 @@ def includeme(config):
     config.add_request_method(
         lambda r: pygit2.Repository(
             pygit2.discover_repository(repo_path),
-            pygit2.GIT_REPOSITORY_OPEN_BARE
+            pygit2.GIT_REPOSITORY_OPEN_NO_SEARCH
+            | pygit2.GIT_REPOSITORY_OPEN_BARE
             | pygit2.GIT_REPOSITORY_OPEN_NO_DOTGIT,
         ),
         "repository",
