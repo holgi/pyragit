@@ -64,3 +64,6 @@ target/
 
 # pyenv
 .python-version
+
+# content repo in production
+content-repo/
